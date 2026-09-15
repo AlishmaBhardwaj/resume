@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alishma Bhardwaj — Software Development Engineer</title>
+<meta name="description" content="Software Development Engineer at Amazon building distributed backend systems, payments infrastructure, and AI-driven operations tooling.">
+<meta name="theme-color" content="#1257e0">
+
+<meta property="og:title" content="Alishma Bhardwaj — Software Development Engineer">
+<meta property="og:description" content="Distributed backend systems, payments infrastructure, and AI-driven operations tooling at Amazon.">
+<meta property="og:type" content="profile">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  /* ============================================================
+     PALETTE — bright white + blue.
+     Single-hue (blue) accent, so the applicable checks are WCAG
+     text contrast and monotonic lightness on the tint ramp:
+       #eef4ff .90 → #d7e6ff .78 → #a8c9ff .57 → #5fa8ff .38
+       → #1257e0 .12 → #0a3d91 .05   (strictly descending)
+     Contrast on white: accent 6.06, body 7.75, mute 5.2 — all AA.
+     Dark mode is stepped from the same ramp, not an inverted flip:
+     accent #5fa8ff on #0a1220 = 7.62.
+     ============================================================ */
+  :root {
+    --bg:        #ffffff;
+    --surface:   #f7faff;
+    --surface-2: #eef4ff;
+    --text:      #0a1b33;
+    --text-soft: #46536b;
+    --text-mute: #5a6a83;
+    --rule:      #dbe6f5;
+    --rule-soft: #eaf1fb;
+    --accent:    #1257e0;
+    --accent-dp: #0040c9;
+    --accent-lt: #a8c9ff;
+    --tag-text:  #1c4fb5;
+    --shadow:    0 1px 2px rgba(10,27,51,.04), 0 8px 24px rgba(18,87,224,.07);
+    --shadow-lift: 0 2px 4px rgba(10,27,51,.05), 0 14px 34px rgba(18,87,224,.13);
+
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --measure: 50rem;
+    --ease: cubic-bezier(.22,.61,.36,1);
+  }
+
+  html[data-theme="dark"] {
+    --bg:        #0a1220;
+    --surface:   #101a2b;
+    --surface-2: #16233a;
+    --text:      #eaf1fb;
+    --text-soft: #a3b4cc;
+    --text-mute: #7183a0;
+    --rule:      #21314b;
+    --rule-soft: #182540;
+    --accent:    #5fa8ff;
+    --accent-dp: #a8c9ff;
+    --accent-lt: #24406e;
+    --tag-text:  #a8c9ff;
+    --shadow:    0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.34);
+    --shadow-lift: 0 2px 4px rgba(0,0,0,.34), 0 14px 34px rgba(0,0,0,.46);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) {
+      --bg:        #0a1220;
+      --surface:   #101a2b;
+      --surface-2: #16233a;
+      --text:      #eaf1fb;
+      --text-soft: #a3b4cc;
+      --text-mute: #7183a0;
+      --rule:      #21314b;
+      --rule-soft: #182540;
+      --accent:    #5fa8ff;
+      --accent-dp: #a8c9ff;
+      --accent-lt: #24406e;
+      --tag-text:  #a8c9ff;
+      --shadow:    0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.34);
+      --shadow-lift: 0 2px 4px rgba(0,0,0,.34), 0 14px 34px rgba(0,0,0,.46);
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    transition: background .3s var(--ease), color .3s var(--ease);
+  }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:hover { color: var(--accent-dp); text-decoration-thickness: 2px; }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  .skip {
+    position: absolute; left: -9999px;
+    background: var(--accent); color: #fff;
+    padding: .6rem 1rem; border-radius: 0 0 6px 0; z-index: 100;
+  }
+  .skip:focus { left: 0; top: 0; }
+
+  /* ---------- Scroll progress ---------- */
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 100%;
+    transform: scaleX(0); transform-origin: 0 50%;
+    background: linear-gradient(90deg, var(--accent), #5fa8ff);
+    z-index: 60;
+  }
+
+  /* ---------- Sticky nav ---------- */
+
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: saturate(140%) blur(12px);
+    -webkit-backdrop-filter: saturate(140%) blur(12px);
+    border-bottom: 1px solid var(--rule-soft);
+  }
+
+  .nav-inner {
+    max-width: var(--measure); margin: 0 auto;
+    padding: .7rem 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+
+  .nav-name {
+    font-weight: 600; font-size: .92rem; letter-spacing: -.01em;
+    margin-right: auto; white-space: nowrap;
+  }
+
+  .nav-links { display: flex; gap: .15rem; list-style: none; margin: 0; padding: 0; }
+
+  .nav-links a {
+    display: block; padding: .34rem .7rem; border-radius: 6px;
+    font-size: .845rem; color: var(--text-soft); text-decoration: none;
+    transition: background .18s var(--ease), color .18s var(--ease);
+  }
+  .nav-links a:hover { background: var(--surface-2); color: var(--accent); }
+  .nav-links a[aria-current="true"] { background: var(--surface-2); color: var(--accent); font-weight: 500; }
+
+  .nav-actions { display: flex; gap: .3rem; }
+
+  .icon-btn {
+    display: grid; place-items: center;
+    width: 34px; height: 34px; padding: 0;
+    border: 1px solid var(--rule); border-radius: 8px;
+    background: var(--bg); color: var(--text-soft);
+    cursor: pointer;
+    transition: color .18s var(--ease), border-color .18s var(--ease), transform .18s var(--ease);
+  }
+  .icon-btn:hover { color: var(--accent); border-color: var(--accent-lt); transform: translateY(-1px); }
+  .icon-btn:active { transform: translateY(0); }
+  .icon-btn svg { width: 16px; height: 16px; }
+
+  html[data-theme="dark"] .i-sun, html:not([data-theme="dark"]) .i-moon { display: none; }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) .i-sun  { display: block; }
+    html:not([data-theme="light"]) .i-moon { display: none; }
+  }
+
+  /* ---------- Layout ---------- */
+
+  .page { max-width: var(--measure); margin: 0 auto; padding: 3.5rem 1.5rem 5rem; }
+
+  /* ---------- Header ---------- */
+
+  header { margin-bottom: 2.75rem; }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-family: var(--mono); font-size: .755rem; letter-spacing: .02em;
+    color: var(--tag-text); background: var(--surface-2);
+    padding: .3rem .7rem; border-radius: 100px; margin-bottom: 1.1rem;
+  }
+  .dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+
+  h1 {
+    font-size: clamp(2.3rem, 7vw, 3.4rem);
+    font-weight: 700; letter-spacing: -.035em; line-height: 1.04;
+    margin: 0 0 .9rem;
+  }
+  h1 .grad {
+    background: linear-gradient(96deg, var(--accent) 8%, #5fa8ff 92%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: var(--accent);
+  }
+
+  /* Justified, but never hyphenated — breaking "infrastructure" across
+     lines as "in-frastructure" is worse than a slightly loose line. */
+  .tagline {
+    font-size: .875rem; font-style: italic;
+    line-height: 1.62; color: var(--text-soft);
+    margin: 0 0 1.5rem;
+    text-align: justify; text-justify: inter-word; hyphens: manual;
+  }
+
+  .contact { display: flex; flex-wrap: wrap; gap: .5rem; list-style: none; margin: 0; padding: 0; }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: .45rem;
+    /* font/line-height must be explicit: <button> does not inherit them,
+       so the email chip would otherwise sit shorter than the <a> chips. */
+    font-family: inherit; font-size: .855rem; font-weight: 400; line-height: 1.6;
+    color: var(--text-soft); text-decoration: none;
+    background: var(--surface); border: 1px solid var(--rule);
+    padding: .4rem .8rem; border-radius: 8px;
+    cursor: pointer;
+    transition: border-color .18s var(--ease), color .18s var(--ease), transform .18s var(--ease), box-shadow .18s var(--ease);
+  }
+  a.chip:hover, button.chip:hover {
+    color: var(--accent); border-color: var(--accent-lt);
+    transform: translateY(-2px); box-shadow: var(--shadow);
+  }
+  .chip svg { width: 15px; height: 15px; flex: none; }
+  .chip.static { cursor: default; }
+  .chip.static:hover { transform: none; box-shadow: none; color: var(--text-soft); border-color: var(--rule); }
+
+  /* Primary action — the one chip that should catch the eye */
+  a.chip.primary {
+    background: var(--accent); border-color: var(--accent);
+    color: #fff; font-weight: 500;
+  }
+  /* All chips share one row, so lock them to a common height */
+  .contact > li { display: flex; }
+  .chip { min-height: 2.35rem; }
+  a.chip.primary:hover {
+    background: var(--accent-dp); border-color: var(--accent-dp); color: #fff;
+  }
+
+  /* ---------- Sections ---------- */
+
+  section { margin-bottom: 3.25rem; scroll-margin-top: 4.5rem; }
+
+  h2 {
+    display: flex; align-items: center; gap: .7rem;
+    font-size: .74rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .13em;
+    color: var(--text-mute); margin: 0 0 1.6rem;
+  }
+  h2::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+
+  /* ---------- Roles ---------- */
+
+  /* No left column — the logo lives in the header row only, so bullets
+     get the full measure and run under the logo. */
+  .role { position: relative; margin-bottom: 2.4rem; }
+  .role:last-child { margin-bottom: 0; }
+
+  /* Logo plate — background stays white in both themes so the
+     wordmarks (black/blue on white) read correctly. */
+  .role-logo {
+    flex: none;
+    width: 3.5rem; height: 2.2rem;
+    display: grid; place-items: center;
+    padding: .3rem;
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 7px;
+    box-shadow: 0 1px 2px rgba(10,27,51,.05);
+    transition: border-color .2s var(--ease), transform .2s var(--ease), box-shadow .2s var(--ease);
+  }
+  .role:hover .role-logo {
+    border-color: var(--accent-lt);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+  .role-logo img {
+    max-width: 100%; max-height: 100%;
+    width: auto; height: auto;
+    object-fit: contain; display: block;
+  }
+  .role-logo svg { width: 20px; height: 20px; color: var(--accent); }
+
+  .role-head {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: .35rem .8rem; margin-bottom: .9rem;
+  }
+  /* Grows to fill, which pushes the date to the right edge */
+  .role-title {
+    flex: 1 1 auto; font-size: 1.13rem; font-weight: 600;
+    margin: 0; letter-spacing: -.015em;
+  }
+  .role-org { color: var(--accent); }
+  .role-meta {
+    font-family: var(--mono); font-size: .765rem;
+    color: var(--text-mute); white-space: nowrap;
+  }
+
+  /* Flush left: the bars sit on the same edge as the heading, tagline and
+     section rules, so they read as the page's left rail. */
+  .bullets { margin: 0; padding: 0; list-style: none; }
+
+  /* Justified like the LaTeX résumé, but hyphens off — see .tagline */
+  .bullets li {
+    position: relative; padding: .1rem .1rem .1rem 1rem;
+    margin-bottom: .8rem; color: var(--text-soft);
+    font-size: .935rem; line-height: 1.62;
+    text-align: justify; text-justify: inter-word; hyphens: manual;
+    border-left: 3px solid var(--accent-lt);   /* fallback for no color-mix */
+    border-radius: 0 4px 4px 0;
+    transition: border-color .2s var(--ease), background .2s var(--ease),
+                color .2s var(--ease), border-left-width .2s var(--ease);
+  }
+  .bullets li:last-child { margin-bottom: 0; }
+
+  /* Graded bars: one hue, strongest first, fading down the list — the
+     bullets are impact-ordered, so the ramp tracks that order.
+     color-mix keeps the ramp correct in dark mode without a second set. */
+  .bullets li:nth-child(1) { border-left-color: color-mix(in srgb, var(--accent) 100%, transparent); }
+  .bullets li:nth-child(2) { border-left-color: color-mix(in srgb, var(--accent)  86%, transparent); }
+  .bullets li:nth-child(3) { border-left-color: color-mix(in srgb, var(--accent)  72%, transparent); }
+  .bullets li:nth-child(4) { border-left-color: color-mix(in srgb, var(--accent)  59%, transparent); }
+  .bullets li:nth-child(5) { border-left-color: color-mix(in srgb, var(--accent)  47%, transparent); }
+  .bullets li:nth-child(6) { border-left-color: color-mix(in srgb, var(--accent)  36%, transparent); }
+  .bullets li:nth-child(7) { border-left-color: color-mix(in srgb, var(--accent)  27%, transparent); }
+  .bullets li:nth-child(n+8) { border-left-color: color-mix(in srgb, var(--accent) 20%, transparent); }
+
+  /* Hover promotes the bar to full strength and thickens it */
+  .bullets li:hover {
+    border-left-color: var(--accent);
+    border-left-width: 5px;
+    padding-left: .875rem;                    /* keeps text from shifting */
+    background: var(--rule-soft);
+    color: var(--text);
+  }
+
+  /* Highlight state driven by the skill-tag filter */
+  .bullets li.hit {
+    border-left-color: var(--accent);
+    border-left-width: 5px;
+    padding-left: .875rem;
+    background: var(--surface-2);
+    color: var(--text);
+  }
+  .bullets li mark {
+    background: color-mix(in srgb, var(--accent) 18%, transparent);
+    color: inherit; border-radius: 3px; padding: 0 .12em;
+  }
+
+  .bullets strong { color: var(--text); font-weight: 600; }
+
+  /* ---------- Skills ---------- */
+
+  .filter-note {
+    font-size: .82rem; color: var(--text-mute);
+    margin: -.7rem 0 1.3rem;
+    display: flex; align-items: center; gap: .6rem; flex-wrap: wrap;
+  }
+  .clear-btn {
+    font: inherit; font-size: .8rem;
+    background: var(--surface-2); color: var(--accent);
+    border: 1px solid var(--accent-lt); border-radius: 100px;
+    padding: .16rem .65rem; cursor: pointer;
+  }
+  .clear-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .clear-btn[hidden] { display: none; }
+
+  .skill-group { margin-bottom: 1.35rem; }
+  .skill-group:last-child { margin-bottom: 0; }
+
+  .skill-label {
+    font-size: .735rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .09em; color: var(--text-mute); margin-bottom: .55rem;
+  }
+
+  .tags { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0; padding: 0; list-style: none; }
+
+  .tag {
+    font-family: var(--mono); font-size: .775rem;
+    padding: .26rem .6rem; border-radius: 6px;
+    background: var(--surface-2); color: var(--tag-text);
+    border: 1px solid transparent;
+    letter-spacing: -.01em;
+  }
+
+  /* Only tags that actually appear in a bullet become buttons */
+  button.tag {
+    font-family: var(--mono); cursor: pointer;
+    transition: background .16s var(--ease), color .16s var(--ease),
+                border-color .16s var(--ease), transform .16s var(--ease);
+  }
+  button.tag:hover { border-color: var(--accent); transform: translateY(-1px); }
+  button.tag[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* ---------- Awards ---------- */
+
+  .award {
+    display: flex; gap: .8rem; align-items: flex-start;
+    background: var(--surface); border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px; padding: 1rem 1.1rem;
+    color: var(--text-soft); font-size: .935rem; line-height: 1.62;
+    margin: 0;
+    text-align: justify; text-justify: inter-word; hyphens: manual;
+  }
+  .award svg { width: 18px; height: 18px; flex: none; margin-top: .22em; color: var(--accent); }
+  .award strong { color: var(--text); font-weight: 600; }
+
+  /* ---------- Footer / back-to-top ---------- */
+
+  footer {
+    margin-top: 4rem; padding-top: 1.4rem;
+    border-top: 1px solid var(--rule);
+    font-size: .82rem; color: var(--text-mute);
+    display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; justify-content: space-between;
+  }
+
+  #to-top {
+    position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 55;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--accent); color: #fff; border: none;
+    display: grid; place-items: center; cursor: pointer;
+    box-shadow: var(--shadow-lift);
+    opacity: 0; visibility: hidden; transform: translateY(8px);
+    transition: opacity .25s var(--ease), transform .25s var(--ease), visibility .25s;
+  }
+  #to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+  #to-top:hover { background: var(--accent-dp); }
+  #to-top svg { width: 17px; height: 17px; }
+
+  /* ---------- Toast ---------- */
+
+  #toast {
+    position: fixed; bottom: 1.6rem; left: 50%;
+    transform: translate(-50%, 12px);
+    background: var(--text); color: var(--bg);
+    font-size: .84rem; padding: .55rem 1rem; border-radius: 8px;
+    box-shadow: var(--shadow-lift); z-index: 70;
+    opacity: 0; visibility: hidden;
+    transition: opacity .22s var(--ease), transform .22s var(--ease), visibility .22s;
+  }
+  #toast.show { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+
+  /* ---------- Reveal on scroll (only once JS confirms support) ---------- */
+
+  .js .reveal { opacity: 0; transform: translateY(14px); }
+  .js .reveal.in {
+    opacity: 1; transform: none;
+    transition: opacity .55s var(--ease), transform .55s var(--ease);
+  }
+
+  /* ---------- Responsive ---------- */
+
+  @media (max-width: 46rem) {
+    .nav-links { display: none; }
+  }
+  @media (max-width: 30rem) {
+    .page { padding-top: 2.5rem; }
+    .role-meta { white-space: normal; }
+    /* Date drops below the title instead of crowding it */
+    .role-title { flex: 1 1 100%; }
+    /* Justification looks bad in a narrow column */
+    .bullets li, .tagline, .award { text-align: left; }
+  }
+
+  /* ---------- Print: clean PDF, chrome removed ---------- */
+
+  @media print {
+    :root {
+      --bg: #fff; --surface: #fff; --surface-2: #f4f4f4; --text: #000;
+      --text-soft: #1c1c1c; --text-mute: #454545; --rule: #cfcfcf;
+      --accent: #0040c9; --accent-lt: #999; --tag-text: #1c1c1c;
+      --shadow: none; --shadow-lift: none;
+    }
+    @page { margin: 13mm 14mm; }
+    html { scroll-behavior: auto; }
+    body { font-size: 10pt; line-height: 1.45; }
+    .page { max-width: none; padding: 0; }
+    .nav, #progress, #to-top, #toast, footer, .filter-note, .eyebrow { display: none !important; }
+    .js .reveal { opacity: 1 !important; transform: none !important; }
+    header { margin-bottom: 1.4rem; }
+    h1 { font-size: 21pt; margin-bottom: .35rem; }
+    h1 .grad { -webkit-text-fill-color: #000; color: #000; background: none; }
+    .tagline { font-size: 9.5pt; margin-bottom: .6rem; }
+    .chip { border: none; background: none; padding: 0 .9rem 0 0; font-size: 8.5pt; }
+    .chip.primary { display: none; }  /* a download link is meaningless on paper */
+    section { margin-bottom: 1.2rem; }
+    h2 { font-size: 8pt; margin-bottom: .65rem; }
+    .role { margin-bottom: 1rem; }
+    .role-logo {
+      width: 2.6rem; height: 1.6rem; padding: .12rem;
+      box-shadow: none; border-color: #d5d5d5;
+    }
+    .role-head { margin-bottom: .45rem; gap: .25rem .6rem; }
+    .role-title { font-size: 11.5pt; }
+    .role-org { color: #000; }
+    .role-meta { font-size: 8.5pt; }
+    /* Keep the graded bars on paper; reset the negative pull */
+    .bullets { margin-left: 0; }
+    .bullets li {
+      font-size: 9.3pt; margin-bottom: .32rem; line-height: 1.45;
+      border-left-width: 2.5px; padding-left: .55rem;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .bullets li.hit {
+      background: none; border-left-width: 2.5px; padding-left: .55rem;
+    }
+    .bullets li mark { background: none; }
+    .tag { font-size: 8pt; padding: .08rem .3rem; background: #f4f4f4; }
+    .skill-group { margin-bottom: .55rem; }
+    .award { border: none; border-left: 2px solid #000; padding: .2rem 0 .2rem .6rem; font-size: 9.3pt; }
+    .award svg { display: none; }
+    .role, .skill-group, .award { break-inside: avoid; }
+    h2 { break-after: avoid; }
+    a { color: #000; text-decoration: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+    .js .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+<div id="progress" aria-hidden="true"></div>
+
+<nav class="nav" aria-label="Sections">
+  <div class="nav-inner">
+    <span class="nav-name">Alishma Bhardwaj</span>
+    <ul class="nav-links">
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#awards">Awards</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <button id="print-btn" class="icon-btn" type="button" aria-label="Print or save as PDF" title="Print / save as PDF">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main class="page" id="main">
+
+  <header>
+    <span class="eyebrow"><span class="dot"></span> Open to SDE roles</span>
+    <h1>Alishma <span class="grad">Bhardwaj</span></h1>
+    <p class="tagline">
+      Software Development Engineer at Amazon building distributed backend systems,
+      payments infrastructure, and AI-driven operations tooling, with end-to-end
+      architecture ownership and technical mentorship experience.
+    </p>
+    <ul class="contact">
+      <li>
+        <a class="chip primary" href="Alishma_Bhardwaj_Resume.pdf" download="Alishma_Bhardwaj_Resume.pdf">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg>
+          Download résumé
+        </a>
+      </li>
+      <li>
+        <button class="chip" id="copy-email" type="button" title="Copy email address">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="m22 6-10 7L2 6"/></svg>
+          alishma25@gmail.com
+        </button>
+      </li>
+      <li>
+        <a class="chip" href="https://www.linkedin.com/in/alishma-bhardwaj/">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+          LinkedIn
+        </a>
+      </li>
+      <li>
+        <span class="chip static">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Bengaluru, India
+        </span>
+      </li>
+    </ul>
+  </header>
+
+  <section id="experience" aria-labelledby="experience-h" class="reveal">
+    <h2 id="experience-h">Work Experience</h2>
+
+    <article class="role">
+      <div class="role-head">
+        <span class="role-logo"><img src="assets/amazon.jpg" alt="Amazon logo" width="796" height="350" loading="lazy"></span>
+        <h3 class="role-title">Software Development Engineer <span class="role-org">· Amazon</span></h3>
+        <span class="role-meta">Feb 2024 — Current</span>
+      </div>
+      <ul class="bullets">
+        <li>Built an AI agent, DORA, on <strong>Amazon Bedrock AgentCore</strong> that answers operational
+            questions directly, querying <strong>DynamoDB, CloudWatch Logs, AWS Glue, SQS</strong> through a
+            <strong>Model Context Protocol</strong> tool layer, reducing manual investigation time from
+            30 minutes to under 5.</li>
+        <li>Extended it into a self-service tool now used by 4 teams for dev testing, debugging and QA
+            testing, adding log search, partial and full Glue job redrive for test runs, automated SQS
+            redrive, and metrics views.</li>
+        <li>Built a catalog ingestion pipeline (<strong>AWS Glue, SQS, Lambda, SNS</strong>) with a team of 3,
+            replacing manual ingestion for in-store point-of-sale systems. Added idempotent processing,
+            event ordering, and dead-letter recovery to safely handle duplicate and out-of-order events.
+            Currently live in 10+ stores and designed for 900K records/day.</li>
+        <li>Led the expansion of PayCheckout, the unified payment page for merchants on Amazon Pay India,
+            into Mexico and Brazil, owning the architecture and technically leading 2 junior engineers
+            through design and delivery; built a separate regional backend of <strong>Java</strong>
+            microservices so each region could scale and function independently of the India stack.</li>
+        <li>Built a payment recommendation system using customers' payment history across multiple
+            <strong>Amazon Pay India</strong> merchants, increasing click-to-conversion on the recommended
+            method to 17%.</li>
+        <li>Moved reward computation off the synchronous checkout path into an asynchronous orchestration
+            flow, and built the feature end to end: the reward widget on the PayCheckout UI, the backend
+            logic for fetching and calculating available rewards, and auto-application of the best reward
+            by default, consolidating fragmented reward experiences across merchants.</li>
+        <li>Designed and built an outage simulation feature for the payment plugins layer, injecting
+            <strong>10+ exception scenarios across 12 checkout plugins</strong> to prove that the fallback
+            payment path let customers still place orders during a payment outage.</li>
+      </ul>
+    </article>
+
+    <article class="role">
+      <div class="role-head">
+        <span class="role-logo"><img src="assets/ecolab.jpg" alt="Ecolab Digital Center logo" width="200" height="200" loading="lazy"></span>
+        <h3 class="role-title">Software Associate Trainee <span class="role-org">· Ecolab Digital Center</span></h3>
+        <span class="role-meta">Jul 2023 — Jan 2024</span>
+      </div>
+      <ul class="bullets">
+        <li>Automated an enterprise QA and release validation workflow using Power Automate and UiPath
+            across 3 Azure-hosted applications, eliminating manual regression cycles and saving 8+
+            hours/week of operations effort.</li>
+      </ul>
+    </article>
+
+    <article class="role">
+      <div class="role-head">
+        <span class="role-logo"><img src="assets/amazon.jpg" alt="Amazon logo" width="796" height="350" loading="lazy"></span>
+        <h3 class="role-title">Software Development Engineer Intern <span class="role-org">· Amazon</span></h3>
+        <span class="role-meta">Jan 2023 — Jun 2023</span>
+      </div>
+      <ul class="bullets">
+        <li>Built a web-based payment configuration management application using Angular and REST APIs,
+            integrating 5+ backend endpoints on an internal RPC/service framework and adding unit and
+            integration test coverage with Jasmine, Karma, and Mockito to improve release reliability.</li>
+      </ul>
+    </article>
+  </section>
+
+  <section id="skills" aria-labelledby="skills-h" class="reveal">
+    <h2 id="skills-h">Technical Skills</h2>
+    <p class="filter-note">
+      <span id="filter-msg">Tap a highlighted skill to see where it shows up in my experience.</span>
+      <button class="clear-btn" id="clear-filter" type="button" hidden>Clear</button>
+    </p>
+
+    <div class="skill-group">
+      <div class="skill-label">Languages</div>
+      <ul class="tags">
+        <li><span class="tag">Java</span></li><li><span class="tag">Python</span></li>
+        <li><span class="tag">TypeScript</span></li><li><span class="tag">JavaScript</span></li>
+        <li><span class="tag">SQL</span></li>
+      </ul>
+    </div>
+
+    <div class="skill-group">
+      <div class="skill-label">Backend &amp; Architecture</div>
+      <ul class="tags">
+        <li><span class="tag">Distributed Systems</span></li><li><span class="tag">System Design</span></li>
+        <li><span class="tag">Microservices</span></li><li><span class="tag">Event-Driven Architecture</span></li>
+        <li><span class="tag">Asynchronous Processing</span></li><li><span class="tag">Message Queues</span></li>
+        <li><span class="tag">REST APIs</span></li><li><span class="tag">Java Microservices</span></li>
+        <li><span class="tag">FastAPI</span></li>
+      </ul>
+    </div>
+
+    <div class="skill-group">
+      <div class="skill-label">AI &amp; Agents</div>
+      <ul class="tags">
+        <li><span class="tag">Amazon Bedrock AgentCore</span></li><li><span class="tag">Strands Agents SDK</span></li>
+        <li><span class="tag">Model Context Protocol</span></li><li><span class="tag">RAG</span></li>
+        <li><span class="tag">Vector Databases</span></li>
+      </ul>
+    </div>
+
+    <div class="skill-group">
+      <div class="skill-label">Cloud &amp; Data</div>
+      <ul class="tags">
+        <li><span class="tag">Lambda</span></li><li><span class="tag">ECS/Fargate</span></li>
+        <li><span class="tag">Docker</span></li><li><span class="tag">SQS</span></li><li><span class="tag">SNS</span></li>
+        <li><span class="tag">DynamoDB</span></li><li><span class="tag">Glue</span></li>
+        <li><span class="tag">API Gateway</span></li><li><span class="tag">CDK</span></li><li><span class="tag">S3</span></li>
+        <li><span class="tag">CloudFront</span></li><li><span class="tag">CloudWatch</span></li>
+        <li><span class="tag">Elasticsearch/OpenSearch</span></li>
+      </ul>
+    </div>
+
+    <div class="skill-group">
+      <div class="skill-label">DevOps &amp; Frontend</div>
+      <ul class="tags">
+        <li><span class="tag">CI/CD</span></li><li><span class="tag">CDK Pipelines</span></li>
+        <li><span class="tag">Infrastructure as Code</span></li><li><span class="tag">Unit &amp; Integration Testing</span></li>
+        <li><span class="tag">Fault Injection &amp; Resiliency Testing</span></li><li><span class="tag">Chaos Testing</span></li>
+        <li><span class="tag">Load Testing</span></li><li><span class="tag">React</span></li>
+        <li><span class="tag">Angular</span></li><li><span class="tag">Git</span></li>
+        <li><span class="tag">Agile/Scrum</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="education" aria-labelledby="education-h" class="reveal">
+    <h2 id="education-h">Education</h2>
+    <article class="role">
+      <div class="role-head">
+        <span class="role-logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12.5V17c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-4.5"/></svg>
+        </span>
+        <h3 class="role-title">B.Tech, Computer Science and Engineering
+          <span class="role-org">· Vellore Institute of Technology</span></h3>
+        <span class="role-meta">2019 — 2023</span>
+      </div>
+      <ul class="bullets">
+        <li>CGPA 9.5 / 10 · Chennai, India</li>
+      </ul>
+    </article>
+  </section>
+
+  <section id="awards" aria-labelledby="awards-h" class="reveal">
+    <h2 id="awards-h">Achievements</h2>
+    <p class="award">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5"/></svg>
+      <span><strong>Amazon Spot Awards</strong> — Received organization-level awards for Payment
+      Resiliency Framework and PayCheckout International Expansion.</span>
+    </p>
+  </section>
+
+  <footer>
+    <span>Alishma Bhardwaj · Bengaluru, India</span>
+    <span>Single static page. <a href="#" id="print-link">Save as PDF</a></span>
+  </footer>
+
+</main>
+
+<button id="to-top" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  var root  = document.documentElement;
+  var calm  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  root.classList.add('js');
+
+  /* ---------- Theme ---------- */
+
+  try {
+    var saved = localStorage.getItem('theme');
+    if (saved === 'light' || saved === 'dark') root.setAttribute('data-theme', saved);
+  } catch (e) { /* private mode — fall through to the OS preference */ }
+
+  function theme() {
+    return root.getAttribute('data-theme') ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  }
+
+  document.getElementById('theme-toggle').addEventListener('click', function () {
+    var next = theme() === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  });
+
+  /* ---------- Print ---------- */
+
+  function doPrint(e) { if (e) e.preventDefault(); window.print(); }
+  document.getElementById('print-btn').addEventListener('click', doPrint);
+  document.getElementById('print-link').addEventListener('click', doPrint);
+
+  /* ---------- Toast ---------- */
+
+  var toast = document.getElementById('toast');
+  var toastTimer;
+  function say(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2200);
+  }
+
+  /* ---------- Copy email ---------- */
+
+  var EMAIL = 'alishma25@gmail.com';
+  document.getElementById('copy-email').addEventListener('click', function () {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(EMAIL)
+        .then(function () { say('Email copied to clipboard'); })
+        .catch(function () { window.location.href = 'mailto:' + EMAIL; });
+    } else {
+      window.location.href = 'mailto:' + EMAIL;
+    }
+  });
+
+  /* ---------- Scroll progress + back to top ---------- */
+
+  var progress = document.getElementById('progress');
+  var toTop    = document.getElementById('to-top');
+  var ticking  = false;
+
+  function onScroll() {
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = max > 0 ? window.scrollY / max : 0;
+    progress.style.transform = 'scaleX(' + pct + ')';
+    toTop.classList.toggle('show', window.scrollY > 500);
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
+  }, { passive: true });
+  onScroll();
+
+  toTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: calm ? 'auto' : 'smooth' });
+  });
+
+  /* ---------- Reveal on scroll ---------- */
+
+  var reveals = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+
+  if (calm || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var revealObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in');
+        revealObs.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+
+    reveals.forEach(function (el, i) {
+      el.style.transitionDelay = (i * 60) + 'ms';
+      revealObs.observe(el);
+    });
+  }
+
+  /* ---------- Scroll-spy nav ---------- */
+
+  var sections = Array.prototype.slice.call(document.querySelectorAll('main section[id]'));
+  var navLinks = {};
+  document.querySelectorAll('.nav-links a').forEach(function (a) {
+    navLinks[a.getAttribute('href').slice(1)] = a;
+  });
+
+  if ('IntersectionObserver' in window) {
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var link = navLinks[entry.target.id];
+        if (!link) return;
+        if (entry.isIntersecting) {
+          Object.keys(navLinks).forEach(function (k) { navLinks[k].removeAttribute('aria-current'); });
+          link.setAttribute('aria-current', 'true');
+        }
+      });
+    }, { rootMargin: '-25% 0px -65% 0px' });
+    sections.forEach(function (s) { spy.observe(s); });
+  }
+
+  /* ---------- Skill tag → highlight matching bullets ----------
+     A tag only becomes a button if its text actually appears in a
+     bullet, so nothing is clickable that would come up empty.       */
+
+  var bullets = Array.prototype.slice.call(document.querySelectorAll('#experience .bullets li'));
+  var msg     = document.getElementById('filter-msg');
+  var clearBtn = document.getElementById('clear-filter');
+  var active  = null;
+
+  // Tag label → extra strings that also count as a match
+  var ALIASES = {
+    'Model Context Protocol': ['Model Context Protocol', 'MCP'],
+    'Message Queues': ['SQS', 'SNS'],
+    'Java Microservices': ['Java'],
+    'Unit & Integration Testing': ['unit and', 'integration test'],
+    'Fault Injection & Resiliency Testing': ['exception scenarios', 'outage simulation'],
+    'Chaos Testing': ['outage simulation'],
+    'Asynchronous Processing': ['asynchronous'],
+    'Event-Driven Architecture': ['event ordering', 'out-of-order events'],
+    'Distributed Systems': ['microservices', 'pipeline'],
+    'Microservices': ['microservices'],
+    'REST APIs': ['REST APIs'],
+    'ECS/Fargate': ['ECS', 'Fargate'],
+    'Elasticsearch/OpenSearch': ['log search'],
+    'Amazon Bedrock AgentCore': ['Bedrock AgentCore'],
+    'System Design': ['owning the architecture', 'architecture']
+  };
+
+  function needlesFor(label) {
+    return (ALIASES[label] || [label]).map(function (s) { return s.toLowerCase(); });
+  }
+
+  function matches(li, needles) {
+    var text = li.textContent.toLowerCase();
+    return needles.some(function (n) { return text.indexOf(n) !== -1; });
+  }
+
+  function clearHighlight() {
+    bullets.forEach(function (li) { li.classList.remove('hit'); });
+    document.querySelectorAll('button.tag[aria-pressed="true"]')
+      .forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+    active = null;
+    clearBtn.hidden = true;
+    msg.textContent = 'Tap a highlighted skill to see where it shows up in my experience.';
+  }
+
+  document.querySelectorAll('.tag').forEach(function (span) {
+    var label = span.textContent.trim();
+    var needles = needlesFor(label);
+    var hits = bullets.filter(function (li) { return matches(li, needles); });
+    if (!hits.length) return;                 // stays a plain, non-clickable tag
+
+    // Promote to a real button now that we know it leads somewhere
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'tag';
+    btn.textContent = label;
+    btn.setAttribute('aria-pressed', 'false');
+    btn.title = hits.length + (hits.length === 1 ? ' matching bullet' : ' matching bullets');
+    span.replaceWith(btn);
+
+    btn.addEventListener('click', function () {
+      var wasActive = active === btn;
+      clearHighlight();
+      if (wasActive) return;
+
+      btn.setAttribute('aria-pressed', 'true');
+      active = btn;
+      hits.forEach(function (li) { li.classList.add('hit'); });
+      clearBtn.hidden = false;
+      msg.textContent = '“' + label + '” — ' + hits.length +
+        (hits.length === 1 ? ' bullet highlighted below.' : ' bullets highlighted below.');
+
+      hits[0].scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'center' });
+    });
+  });
+
+  clearBtn.addEventListener('click', clearHighlight);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && active) clearHighlight();
+  });
+})();
+</script>
+
+</body>
+</html>
